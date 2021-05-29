@@ -7,6 +7,7 @@ This tutorial will take you through how to use [Folium](https://python-visualiza
 Before we get started, it's important to mention that `folium` uses the `pandas` dataframe. The `pandas` dataframe is a python library used for mapping. To learn more about Pandas data structures, you can read up it [here](https://pandas.pydata.org/pandas-docs/stable/user_guide/dsintro.html). If you want to learn more about using the `pandas` library, you can follow [this tutorial](https://github.com/comorehouse1620/Matplotlib) before returning to this one. 
 
 ### Objectives
+The main objective of this lab is to understand how to use the `folium` library, and to gain a deeper understanding of chloropleth maps. 
 
 ### What You Need To Begin
 1. This tutorial is set up using Google Colabs, so you will need an account 
