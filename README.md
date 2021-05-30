@@ -12,7 +12,7 @@ The main objective of this lab is to understand how to use the `folium` library,
 ### What You Need To Begin
 1. This tutorial is set up using Google Colabs, so you will need an account 
 2. You will need to install [Pandas](https://pandas.pydata.org/), [Folium](https://python-visualization.github.io/folium/), and [JSON](https://docs.python.org/3/library/json.html) libraries
-3. You will need to download the data located in this repos "Data" file
+3. You will need to download the data located in this repos "Data" file and data from the site itself
 
 Use the following code to install Pandas, Folium, and JSON libraries: 
 
@@ -24,6 +24,8 @@ from folium import plugins
 ```
 
 ## Downloading the Data 
+Some of the housing data we are going to be using in this tutorial is too big for the repo here, so you're going to need to download the files directly from ArcGIS Online hub that stores the HUD products. 
+
 
 ### Housing Crisis
 
@@ -32,6 +34,7 @@ For this tutorial, we will be using data from the US Department of Housing and U
 The Estimated Housing Authority Service Area is polygon based data, where the data is aggregated and summarized at the "service areas" created by HUD themselves. The second dataset, Public Housing Buildings, is point based data, with each point representing a public housing building. We will look at how to explore both types of data in this tutorial. 
 
 The data was downloaded in a CSV format for the Public Housing Buildings. It looks like: 
+![](CSV_Example.png)
 
 ```Python
 # Upload local script to Colab - running this creates a "choose file" button to upload local files.
