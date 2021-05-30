@@ -34,7 +34,7 @@ For this tutorial, we will be using data from the US Department of Housing and U
 The Estimated Housing Authority Service Area is polygon based data, where the data is aggregated and summarized at the "service areas" created by HUD themselves. The second dataset, Public Housing Buildings, is point based data, with each point representing a public housing building. We will look at how to explore both types of data in this tutorial. 
 
 The data was downloaded in a CSV format for the Public Housing Buildings. It looks like: 
-![](CSV_Example.png)
+![](CSV_example.PNG)
 
 ```Python
 # Upload local script to Colab - running this creates a "choose file" button to upload local files.
