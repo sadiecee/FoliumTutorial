@@ -23,8 +23,15 @@ import json
 from folium import plugins
 ```
 
-## Using Folium 
+## Downloading the Data 
 
+### Housing Crisis
+
+For this tutorial, we will be using data from the US Department of Housing and Urban Development (HUD) to look at some questions of access to affordable, public housing. You can find all the data sets located in the "Data" folder of this repo, or you can download them yourself here: [Estimated Housing Authority Service Areas](https://hudgis-hud.opendata.arcgis.com/datasets/HUD::estimated-housing-authority-service-areas/about), and [Public Housing Buildings](https://hudgis-hud.opendata.arcgis.com/datasets/HUD::estimated-housing-authority-service-areas/about). 
+
+The Estimated Housing Authority Service Area is polygon based data, where the data is aggregated and summarized at the "service areas" created by HUD themselves. The second dataset, Public Housing Buildings, is point based data, with each point representing a public housing building. We will look at how to explore both types of data in this tutorial. 
+
+The data was downloaded in a CSV format for the Public Housing Buildings. It looks like: 
 
 ```Python
 # Upload local script to Colab - running this creates a "choose file" button to upload local files.
@@ -32,7 +39,7 @@ from google.colab import files
 uploaded = files.upload()
 ```
 
-### What is Folium
+## Using Folium 
 
 ### Static Maps 
 
