@@ -68,8 +68,33 @@ sample
 ```
 The different types of maps "tiles" you can use are: `Stamen Terrain`, `Open Street Map`, `Stamen Toner`, `Stamen Watercolor`, `CartoDB Positron`, or `CartoDB Dark_Matter`. Play around with these different map formats to find out which ones you like best or which might be most appropriate for your data! 
 
-### Interactive Maps 
+### Point Maps 
+Okay, we're ready to start working with some of our data now! We're going to be using the CSV file "Public_Housing.csv" that we downloaded from HUD at the start of this tutorial. 
+
+Making a marker on Folium is easy! 
+
+```
+folium.Marker(lat,long)
+```
+Is the basic code!
+
 
 ### Cholorpleth Maps 
+
+
+### Combining What We Know
+
+Just for a little bit of flare, we're going to now combine our two layers -- our point layer and our chloropleth map. We want to set it up so that you can toggle between both data sets. This is called "layer control". It will be found in the upper right hand corner of your map output (see the red circle below, using the `Stamen Watercolor` map tile). 
+![](Images/layercontrol.PNG)
+
+The basic code to set up layer control (or layer toggling) is: 
+
+```
+sample = folium.Map(location=[42.26259, -71.80229], zoom_start=8, control_scale=True, tiles='Stamen Toner')
+
+folium.LayerControl().add_to(sample)
+
+sample
+```
 
 ## Citation 
