@@ -122,7 +122,18 @@ ph = gpd.GeoDataFrame(ph, crs={'init' :'epsg:4326'})
 
 ### Cholorpleth Maps 
 
-Now, we're going to 
+Now, we're going to bring in the GeoJSON file we downloaded at the start of the tutorial: Estimated_Housing_Authority_Service_Areas. This part is actually pretty simple. We're just going to initialize our Folium map with the GeoJSON layer. 
+
+```Python
+# map
+map_geojson = folium.Map(location=[33.77, 35.15], zoom_start=3)
+
+# add geojson file to map
+folium.GeoJson('Estimated_Housing_Authority_Service_Areas.geojson', name='geojson servicearea').add_to(map_geojson)
+
+# display map
+map_geojson
+```
 
 ### Combining What We Know
 
