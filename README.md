@@ -35,7 +35,7 @@ The two datasets we will be downloading are the Estimated Housing Authority Serv
 
 **The first piece of data you are going to want to download** can be found [here](https://hudgis-hud.opendata.arcgis.com/datasets/HUD::public-housing-buildings/). This is a dataset of all public housing authority buildings and characteristics of these buildings. You should download this data in *csv* format. This is a spreadsheet of all the public housing If you open it up on your computer, it should look something like this:  
 
-![](CSV_example.PNG)
+![](Images/CSV_example.PNG)
 
 
 **The second piece of data you are going to want to download** can be found [here](https://hudgis-hud.opendata.arcgis.com/datasets/HUD::estimated-housing-authority-service-areas/about). This represents the estimated service areas of housing authorities. You should download this data as a *GeoJSON* file. 
@@ -58,7 +58,7 @@ folium.Map()
 ```
 
 And it gives you an output like this: 
-![](FoliumBasic.PNG)
+![](Images/FoliumBasic.PNG)
 
 Now, if you'd like, you can make all kinds of edits to your map -- changing the zoom, centering the map in a certain area, changing the design of the basemap, or more. The sample code below is just one example of how you can customize even a basic Folium map pretty easily! Here, I've centered the map on Worcester, chosen a relatively close zoom, added a distance scale, and altered the baselayer display from Open Street Maps to Stamen Toner. 
 
