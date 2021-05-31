@@ -119,8 +119,10 @@ ph['geometry'] = ph.apply(lambda row: Point(row.X, row.Y), axis=1)
 ph = gpd.GeoDataFrame(ph, crs={'init' :'epsg:4326'})
 ```
 
+
 ### Cholorpleth Maps 
 
+Now, we're going to 
 
 ### Combining What We Know
 
@@ -130,11 +132,16 @@ Just for a little bit of flare, we're going to now combine our two layers -- our
 The basic code to set up layer control (or layer toggling) is: 
 
 ```Python
+#set up a basic sample map
 sample = folium.Map(location=[42.26259, -71.80229], zoom_start=8, control_scale=True, tiles='Stamen Watercolor')
 
+#add the layer control toggle to the map
 folium.LayerControl().add_to(sample)
 
+#display the map 
 sample
 ```
+
+You can use this to toggle between a point based layer, a chloropleth map, or multiple different polygon based maps -- for example, if you wanted to filter through maps for housing access by year. 
 
 ## Citation 
