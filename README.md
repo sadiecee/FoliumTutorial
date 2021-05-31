@@ -65,8 +65,8 @@ Now, if you'd like, you can make all kinds of edits to your map -- changing the 
 ```
 sample = folium.Map(location=[42.26259, -71.80229], zoom_start=8, control_scale=True, tiles='Stamen Toner')
 sample
-
 ```
+The different types of maps "tiles" you can use are: `Stamen Terrain`, `Open Street Map`, `Stamen Toner`, `Stamen Watercolor`, `CartoDB Positron`, or `CartoDB Dark_Matter`. Play around with these different map formats to find out which ones you like best or which might be most appropriate for your data! 
 
 ### Interactive Maps 
 
