@@ -102,7 +102,7 @@ ph.sample(5)
 
 You'll know you have it right if you get a result that looks something like this: 
 
-![](phsample.PNG)
+![](Images/phsample.PNG)
 
 To see some more information on what columns we have in here, you can run this code: 
 
