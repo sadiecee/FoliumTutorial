@@ -83,7 +83,32 @@ folium.Marker(locate, popup='Home of the Woo Socks!', tooltip='click').add_to(sa
 # display map
 sample
 ```
-Is the basic code! We are going to be designing a bit of code that will iterate over our data in order to put down a marker for every public housing building! 
+This is the basic code for displaying a map. We are going to be designing a bit of code that will iterate over our data in order to put down a marker for every public housing building -- but first, we need to load our CVS into google (you might need to reload it, depending on how quickly you have been working through the tutorial -- it's a big file, and can take a while to fully load! 
+
+To set up your data frame, you're going to be using the Pandas library. 
+
+```Python
+import csv
+
+#read csv
+ph = pd.read_csv('tester.csv')
+```
+
+If you'd like to check and see what this looks like, I would recommend running a small bit of code just to look at the first five rows -- like I mentioned, it's a big dataset. 
+
+```Python
+ph.sample(5)
+```
+
+You'll know you have it right if you get a result that looks something like this: 
+
+![](phsample.PNG)
+
+To see some more information on what columns we have in here, you can run this code: 
+
+```Python 
+ph.info()
+```
 
 
 ### Cholorpleth Maps 
