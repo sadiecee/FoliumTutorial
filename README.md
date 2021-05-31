@@ -74,9 +74,16 @@ Okay, we're ready to start working with some of our data now! We're going to be 
 Making a marker on Folium is easy! 
 
 ```
-folium.Marker(lat,long)
+# address latitude and longitude
+locate = [42.26259, -71.80229]
+
+# add marker to map
+folium.Marker(locate, popup='Home of the Woo Socks!', tooltip='click').add_to(sample)
+
+# display map
+sample
 ```
-Is the basic code!
+Is the basic code! We are going to be designing a bit of code that will iterate over our data in order to put down a marker for every public housing building! 
 
 
 ### Cholorpleth Maps 
