@@ -62,7 +62,7 @@ And it gives you an output like this:
 
 Now, if you'd like, you can make all kinds of edits to your map -- changing the zoom, centering the map in a certain area, changing the design of the basemap, or more. The sample code below is just one example of how you can customize even a basic Folium map pretty easily! Here, I've centered the map on Worcester, chosen a relatively close zoom, added a distance scale, and altered the baselayer display from Open Street Maps to Stamen Toner. 
 
-```
+```Python
 sample = folium.Map(location=[42.26259, -71.80229], zoom_start=8, control_scale=True, tiles='Stamen Toner')
 sample
 ```
@@ -73,7 +73,7 @@ Okay, we're ready to start working with some of our data now! We're going to be 
 
 Making a marker on Folium is easy! 
 
-```
+```Python
 # address latitude and longitude
 locate = [42.26259, -71.80229]
 
@@ -96,7 +96,7 @@ Just for a little bit of flare, we're going to now combine our two layers -- our
 
 The basic code to set up layer control (or layer toggling) is: 
 
-```
+```Python
 sample = folium.Map(location=[42.26259, -71.80229], zoom_start=8, control_scale=True, tiles='Stamen Watercolor')
 
 folium.LayerControl().add_to(sample)
