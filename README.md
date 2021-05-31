@@ -1,10 +1,10 @@
-# The Basics of Crafting Static and Interactive Maps with Folium in Python
+# The Basics of Crafting Static Maps with Panda versus Interactive Maps with Folium in Python
 _Created by Sadie Murray._
 
 ## Background 
-This tutorial will take you through how to use [Folium](https://python-visualization.github.io/folium/) to create static and interactive maps. Folium uses the mapping capabilities of the `leaflet.js`, a javascript mapping library that is designed with "simplicity, useability and performance" in mind. `Folium` brings the mapping capacity of `leaflet` to python. `Folium` lets you create interactive maps from data that has been manipulated in python, pass raster or vector markers in for use, and lets you bind data to chloropleth maps. The tutorial will take you through uploading and manipulating your data in python and creating customizable interactive maps, including chloropleth maps. 
+This tutorial has two parts. First, we will walk through how to upload CSV data and create static maps using the Pandas library in Python. Then, I will take you through how to use [Folium](https://python-visualization.github.io/folium/) to create interactive maps. Folium uses the mapping capabilities of the `leaflet.js`, a javascript mapping library that is designed with "simplicity, useability and performance" in mind. `Folium` brings the mapping capacity of `leaflet` to python. `Folium` lets you create interactive maps from data that has been manipulated in python, pass raster or vector markers in for use, and lets you bind data to chloropleth maps. The tutorial will take you through uploading and manipulating your data in python and creating customizable interactive maps, including chloropleth maps. 
 
-Before we get started, it's important to mention that `folium` uses the `pandas` dataframe. The `pandas` dataframe is a python library used for mapping. To learn more about Pandas data structures, you can read up it [here](https://pandas.pydata.org/pandas-docs/stable/user_guide/dsintro.html). If you want to learn more about using the `pandas` library, you can follow [this tutorial](https://github.com/comorehouse1620/Matplotlib) before returning to this one. 
+Before we get started, it's important to mention that `folium` uses the `pandas` dataframe. The `pandas` dataframe is a python library used for mapping. To learn more about Pandas data structures, you can read up it [here](https://pandas.pydata.org/pandas-docs/stable/user_guide/dsintro.html), though we will go into greater detail about the Pandas library in that section. If you want to learn more about using the `pandas` library for non-mapping purposes, you can follow [this tutorial](https://github.com/comorehouse1620/Matplotlib) before returning here. 
 
 ### Objectives
 The main objective of this lab is to understand how to use the `folium` library, and to gain a deeper understanding of chloropleth maps. 
@@ -12,7 +12,7 @@ The main objective of this lab is to understand how to use the `folium` library,
 ### What You Need To Begin
 1. This tutorial is set up using Google Colabs, so you will need an account 
 2. You will need to install [Pandas](https://pandas.pydata.org/), [Folium](https://python-visualization.github.io/folium/), and [JSON](https://docs.python.org/3/library/json.html) libraries
-3. You will need to download the data located in this repos "Data" file and data from the site itself
+3. You will need to download the data located in this repos "Data" file 
 
 Use the following code to install Pandas, Folium, and JSON libraries: 
 
@@ -23,7 +23,7 @@ import json
 from folium import plugins
 ```
 
-## Downloading the Data 
+## Maps with Pandas  
 Some of the housing data we are going to be using in this tutorial is too big for the repo here, so you're going to need to download the files directly from ArcGIS Online hub that stores the HUD products. 
 
 
@@ -38,7 +38,7 @@ The two datasets we will be downloading are the Estimated Housing Authority Serv
 ![](Images/CSV_example.PNG)
 
 
-**The second piece of data you are going to want to download** can be found [here](https://hudgis-hud.opendata.arcgis.com/datasets/HUD::estimated-housing-authority-service-areas/about). This represents the estimated service areas of housing authorities. You should download this data as a *GeoJSON* file. 
+**A smaller, "sample" version of that data set can be found in the data folder for this tutorial**. Because the data is so large, it might be quicker to use a smaller fraction of the data. It is also helpful if you're having difficulty downloading the data from ArcOnline. Whichever dataset you chose to use should allow you to create and visual point based maps from CSV latitude and longitude files. 
 
 Once you have your data, you're going to want to upload it to Python. You can do that using the code below. Remember to upload all three of the files we are looking at here! 
 
@@ -48,42 +48,10 @@ from google.colab import files
 uploaded = files.upload()
 ```
 
-## Using Folium 
+### Preparing the Data
 
-### Basic Maps 
-The python code to simply call a genetric folium basemap (and that we will use to add our data or baselayers to eventually) is simple: 
-
-```
-folium.Map()
-```
-
-And it gives you an output like this: 
-![](Images/FoliumBasic.PNG)
-
-Now, if you'd like, you can make all kinds of edits to your map -- changing the zoom, centering the map in a certain area, changing the design of the basemap, or more. The sample code below is just one example of how you can customize even a basic Folium map pretty easily! Here, I've centered the map on Worcester, chosen a relatively close zoom, added a distance scale, and altered the baselayer display from Open Street Maps to Stamen Toner. 
-
-```Python
-sample = folium.Map(location=[42.26259, -71.80229], zoom_start=8, control_scale=True, tiles='Stamen Toner')
-sample
-```
-The different types of maps "tiles" you can use are: `Stamen Terrain`, `Open Street Map`, `Stamen Toner`, `Stamen Watercolor`, `CartoDB Positron`, or `CartoDB Dark_Matter`. Play around with these different map formats to find out which ones you like best or which might be most appropriate for your data! 
-
-### Point Maps 
+### Visualizing the Map
 Okay, we're ready to start working with some of our data now! We're going to be using the CSV file "Public_Housing.csv" that we downloaded from HUD at the start of this tutorial. 
-
-Making a marker on Folium is easy! 
-
-```Python
-# address latitude and longitude
-locate = [42.26259, -71.80229]
-
-# add marker to map
-folium.Marker(locate, popup='Home of the Woo Socks!', tooltip='click').add_to(sample)
-
-# display map
-sample
-```
-This is the basic code for displaying a map. We are going to be designing a bit of code that will iterate over our data in order to put down a marker for every public housing building -- but first, we need to load our CVS into google (you might need to reload it, depending on how quickly you have been working through the tutorial -- it's a big file, and can take a while to fully load! 
 
 To set up your data frame, you're going to be using the Pandas library. 
 
@@ -118,6 +86,42 @@ ph['geometry'] = ph.apply(lambda row: Point(row.X, row.Y), axis=1)
 #project the data frame into a coordinate system
 ph = gpd.GeoDataFrame(ph, crs={'init' :'epsg:4326'})
 ```
+
+
+## Using Folium 
+To create visualizations in Folium, we are going to be using data from the [GitHub documentation for the Folium function](https://python-visualization.github.io/folium/index.html). You shouldn't need to download any more data, but the documentation will be a valuable resource moving forward! 
+
+### Basic Maps 
+The python code to simply call a genetric folium basemap (and that we will use to add our data or baselayers to eventually) is simple: 
+
+```
+folium.Map()
+```
+
+And it gives you an output like this: 
+![](Images/FoliumBasic.PNG)
+
+Now, if you'd like, you can make all kinds of edits to your map -- changing the zoom, centering the map in a certain area, changing the design of the basemap, or more. The sample code below is just one example of how you can customize even a basic Folium map pretty easily! Here, I've centered the map on Worcester, chosen a relatively close zoom, added a distance scale, and altered the baselayer display from Open Street Maps to Stamen Toner. 
+
+```Python
+sample = folium.Map(location=[42.26259, -71.80229], zoom_start=8, control_scale=True, tiles='Stamen Toner')
+sample
+```
+The different types of maps "tiles" you can use are: `Stamen Terrain`, `Open Street Map`, `Stamen Toner`, `Stamen Watercolor`, `CartoDB Positron`, or `CartoDB Dark_Matter`. Play around with these different map formats to find out which ones you like best or which might be most appropriate for your data! 
+
+Making a marker on Folium is easy! 
+
+```Python
+# address latitude and longitude
+locate = [42.26259, -71.80229]
+
+# add marker to map
+folium.Marker(locate, popup='Home of the Woo Socks!', tooltip='click').add_to(sample)
+
+# display map
+sample
+```
+This is the basic code for displaying a map. We are going to be designing a bit of code that will iterate over our data in order to put down a marker for every public housing building -- but first, we need to load our CVS into google (you might need to reload it, depending on how quickly you have been working through the tutorial -- it's a big file, and can take a while to fully load! 
 
 
 ### Cholorpleth Maps 
@@ -173,7 +177,7 @@ folium.Choropleth(
 ```
 
 
-### Combining What We Know
+### Adding Flare
 
 Just for a little bit of flare, we're going to now combine our two layers -- our point layer and our chloropleth map. We want to set it up so that you can toggle between both data sets. This is called "layer control". It will be found in the upper right hand corner of your map output (see the red circle below, using the `Stamen Watercolor` map tile). 
 ![](Images/layercontrol.PNG)
@@ -191,5 +195,7 @@ folium.LayerControl().add_to(sample)
 sample
 ```
 
+Additionally, to play around with how to make your maps look as interesting, unique or detailed as possible, you can visit the [library of folium functions](https://python-visualization.github.io/folium/modules.html) to understand the syntax involved. Happy coding! 
 
 ## Citation 
+I'd like to thank my professor, Shadrock Roberts! 
