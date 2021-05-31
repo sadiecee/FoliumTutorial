@@ -109,7 +109,15 @@ To see some more information on what columns we have in here, you can run this c
 ```Python 
 ph.info()
 ```
+Okay, now you're ready to convert your CSV data into point data. Here, we're going to add a geometry field to our dataframe, and populate it with the "Point" value containing the latitude and longitude of each Public Housing Building (in our data this is called X and Y, but you'll want to check and see what the column labels are for the lat and long data in other data sets you might upload. 
 
+```Python
+#add the geometry field of a point data containing the lat/long value
+ph['geometry'] = ph.apply(lambda row: Point(row.X, row.Y), axis=1)
+
+#project the data frame into a coordinate system
+ph = gpd.GeoDataFrame(ph, crs={'init' :'epsg:4326'})
+```
 
 ### Cholorpleth Maps 
 
