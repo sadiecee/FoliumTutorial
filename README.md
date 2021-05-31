@@ -135,6 +135,44 @@ folium.GeoJson('Estimated_Housing_Authority_Service_Areas.geojson', name='geojso
 map_geojson
 ```
 
+You can use this to toggle between a point based layer, a chloropleth map, or multiple different polygon based maps -- for example, if you wanted to filter through maps for housing access by year. It'll give us an output that looks something like this: 
+
+And now for the most exciting part! We're going to be using this data to create a chloropleth map! Here, we're going to want to upload both the Estimated_Housing_Authority_Service_Areas.geojson file and the Estimated_Housing_Authority_Service_Areas.csv file. This will contain the actual shape of the regions and the data to populate the regions. Estimated_Housing_Authority_Service_Areas.csv can be found in the data file for this tutorial. Otherwise, you can download it from HUD's arcGIS online account where we found the Estimated_Housing_Authority_Service_Areas.geojson file. 
+
+```Python
+
+#you are going to use QGIS to convert your shapefile into something we can use
+with open('Estimated_Housing_Authority_Service_Areas.geojson') as f:
+    ServiceAreas = json.load(f)
+    
+# add feature 'id' county name to geojson
+# access features
+for i in Estimated_Housing_Authority_Service_Areas['features']:
+    i['id'] = i['properties']['NAME_L']
+    
+# load data associated with geo_json
+hud_df = pd.read_csv('Estimated_Housing_Authority_Service_Areas.csv')
+    
+# map    
+map_choropleth = folium.Map(location=[39.77, -86.15], zoom_start=7)
+
+# choropleth
+folium.Choropleth(
+    geo_data=geojson_counties,
+    name='choropleth',
+    data=pop_df,
+    columns=['County', 'Population'],
+    # see folium.Choropleth? for details on key_on
+    key_on='feature.id',
+    fill_color='YlGn',
+    fill_opacity=0.5,
+    line_opacity=0.5,
+    legend_name='Population',
+    highlight=True
+).add_to(map_choropleth)
+```
+
+
 ### Combining What We Know
 
 Just for a little bit of flare, we're going to now combine our two layers -- our point layer and our chloropleth map. We want to set it up so that you can toggle between both data sets. This is called "layer control". It will be found in the upper right hand corner of your map output (see the red circle below, using the `Stamen Watercolor` map tile). 
@@ -153,6 +191,5 @@ folium.LayerControl().add_to(sample)
 sample
 ```
 
-You can use this to toggle between a point based layer, a chloropleth map, or multiple different polygon based maps -- for example, if you wanted to filter through maps for housing access by year. 
 
 ## Citation 
