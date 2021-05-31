@@ -50,7 +50,16 @@ uploaded = files.upload()
 
 ## Using Folium 
 
-### Static Maps 
+### Basic Maps 
+The python code to simply call a genetric folium basemap (and that we will use to add our data or baselayers to eventually) is simple: 
+
+```
+folium.Map()
+```
+
+And it gives you an output like this: 
+![](FoliumBasic.PNG)
+
 
 ### Interactive Maps 
 
