@@ -90,7 +90,7 @@ Just for a little bit of flare, we're going to now combine our two layers -- our
 The basic code to set up layer control (or layer toggling) is: 
 
 ```
-sample = folium.Map(location=[42.26259, -71.80229], zoom_start=8, control_scale=True, tiles='Stamen Toner')
+sample = folium.Map(location=[42.26259, -71.80229], zoom_start=8, control_scale=True, tiles='Stamen Watercolor')
 
 folium.LayerControl().add_to(sample)
 
