@@ -60,6 +60,13 @@ folium.Map()
 And it gives you an output like this: 
 ![](FoliumBasic.PNG)
 
+Now, if you'd like, you can make all kinds of edits to your map -- changing the zoom, centering the map in a certain area, changing the design of the basemap, or more. The sample code below is just one example of how you can customize even a basic Folium map pretty easily! Here, I've centered the map on Worcester, chosen a relatively close zoom, added a distance scale, and altered the baselayer display from Open Street Maps to Stamen Toner. 
+
+```
+sample = folium.Map(location=[42.26259, -71.80229], zoom_start=8, control_scale=True, tiles='Stamen Toner')
+sample
+
+```
 
 ### Interactive Maps 
 
