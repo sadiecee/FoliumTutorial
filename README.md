@@ -109,6 +109,27 @@ You should be able to visualize this map:
 
 ![](Images/map1.png)
 
+If, on the other hand, you would like to display this map as a choropleth map, you can join CSV data to this file. Now, using the same code we've used to upload data before, you're going to want to upload Estimated_Housing_Authority_Service_Areas.csv file that we downloaded in the first step of this tutorial. I'm going to be joining the two fields on the on first column, "OBJECTID", but this will vary with whatever datasets you're joining. A lot of geospatial data comes with a "key" field that is intended to be used in joins like this -- that's what you want to make sure to look for! 
+
+```Python
+#read the CSV and the GeoJSON data 
+map_df = gpd.read_file("Estimated_Housing_Authority_Service_Areas.geojson")
+df = pd.read_csv("Estimated_Housing_Authority_Service_Areas.csv")
+
+#merge the two together 
+merge = map_df.merge(df[['OBJECTID']], how='left', left_on='OBJECTID', right_on=map_df['OBJECTID'])
+
+#plot and display map
+merge.plot(column='PCT_SHARE', legend=True, figsize=(16,8));
+```
+
+Running this code should produce a choropleth map: 
+
+![](Images/map2.png)
+
+We're not going to go too far in depth on customizing and adding flare to your choropleth map in this tutorial, but if you're interested, you can check out [this](https://towardsdatascience.com/a-beginners-guide-to-create-a-cloropleth-map-in-python-using-geopandas-and-matplotlib-9cc4175ab630) fantastic tutorial to the basics of choropleth editing. 
+
+
 ## Using Folium 
 To create visualizations in Folium, we are going to be using data from the [GitHub documentation for the Folium function](https://python-visualization.github.io/folium/index.html). You shouldn't need to download any more data, but the documentation will be a valuable resource moving forward! 
 
