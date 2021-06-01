@@ -2,12 +2,12 @@
 _Created by Sadie Murray._
 
 ## Background 
-This tutorial has two parts. First, we will walk through how to upload CSV data and create static maps using the Pandas library in Python. Then, I will take you through how to use [Folium](https://python-visualization.github.io/folium/) to create interactive maps. Folium uses the mapping capabilities of the `leaflet.js`, a javascript mapping library that is designed with "simplicity, useability and performance" in mind. `Folium` brings the mapping capacity of `leaflet` to python. `Folium` lets you create interactive maps from data that has been manipulated in python, pass raster or vector markers in for use, and lets you bind data to chloropleth maps. The tutorial will take you through uploading and manipulating your data in python and creating customizable interactive maps, including chloropleth maps. 
+This tutorial has two parts. First, we will walk through how to upload CSV data and create static maps using the Pandas library in Python. Then, I will take you through how to use [Folium](https://python-visualization.github.io/folium/) to create interactive maps. Folium uses the mapping capabilities of the `leaflet.js`, a javascript mapping library that is designed with "simplicity, useability and performance" in mind. `Folium` brings the mapping capacity of `leaflet` to python. `Folium` lets you create interactive maps from data that has been manipulated in python, pass raster or vector markers in for use, and lets you bind data to choropleth maps. The tutorial will take you through uploading and manipulating your data in python and creating customizable interactive maps, including choropleth maps. 
 
 Before we get started, it's important to mention that `folium` uses the `pandas` dataframe. The `pandas` dataframe is a python library used for mapping. To learn more about Pandas data structures, you can read up it [here](https://pandas.pydata.org/pandas-docs/stable/user_guide/dsintro.html), though we will go into greater detail about the Pandas library in that section. If you want to learn more about using the `pandas` library for non-mapping purposes, you can follow [this tutorial](https://github.com/comorehouse1620/Matplotlib) before returning here. 
 
 ### Objectives
-The main objective of this lab is to understand how to use the `folium` library, and to gain a deeper understanding of chloropleth maps. 
+The main objective of this lab is to understand how to use the `folium` library, and to gain a deeper understanding of choropleth maps. 
 
 ### What You Need To Begin
 1. This tutorial is set up using Google Colabs, so you will need an account 
@@ -199,7 +199,7 @@ You'll be able to add as many markers as you need.
 
 ### Cholorpleth Maps 
 
-Now, this part is pretty simple. We're going to be initializing a chloropleth map, but we're going to be doing it by first importing a json of the US states and then attaching a CSV. All the data here comes from the Python documentation page for the Folium library, so you shouldn't need to download anymore data -- though you are welcome to use your own datasets for these step instead! 
+Now, this part is pretty simple. We're going to be initializing a choropleth map, but we're going to be doing it by first importing a json of the US states and then attaching a CSV. All the data here comes from the Python documentation page for the Folium library, so you shouldn't need to download anymore data -- though you are welcome to use your own datasets for these step instead! 
 
 ```Python
 import pandas as pd
@@ -231,7 +231,11 @@ m
 
 ```
 
-Now that we have our chloropleth map, we're going to want to edit the actual content of the data. First, we can use different functions to re-bin our data! This is critical if you want to use different breaks, control the number or location of the breaks, or otherwise alter the default data stratification done by Python. In this example, you're just going to be re-binning the data, which should give you a slightly different map! 
+The intial choropleth map that we are able to create here should look something like this: 
+
+![](Images/Choro.PNG)
+
+Now that we have our choropleth map, we're going to want to edit the actual content of the data. First, we can use different functions to re-bin our data! This is critical if you want to use different breaks, control the number or location of the breaks, or otherwise alter the default data stratification done by Python. In this example, you're just going to be re-binning the data, which should give you a slightly different map! 
 
 ```Python
 bins = list(state_data["Unemployment"].quantile([0, 0.25, 0.5, 0.75, 1]))
@@ -243,9 +247,9 @@ folium.Choropleth(
     data=state_data,
     columns=["State", "Unemployment"],
     key_on="feature.id",
-    fill_color="BuPu",
+    fill_color="YlGn",
     fill_opacity=0.7,
-    line_opacity=0.5,
+    line_opacity=0.2,
     legend_name="Unemployment Rate (%)",
     bins=bins,
     reset=True,
@@ -253,6 +257,10 @@ folium.Choropleth(
 
 m
 ```
+
+![](Images/bin.PNG)
+
+As you can see, the data has been divided into six different bins. You can run different variations of this code, by using `bins=4` or any number of bins, or by creating your own binning categories in the `folium.Choropleth()` syntax. Altering the line `bins=bins,` to read `bins=[0,20,60,100],` for example, is one method you could use to alter your bin categories. This can be a critical decision to make, and it is often helpful to explore a variety of different bins -- or even use histograms of your data -- to select the proper bin to tell the story of your data. 
 
 ### Adding Flare
 
@@ -295,7 +303,7 @@ folium.TopoJson(
 m
 ```
 
-Just for a little bit of flare, we're going to now combine our two layers -- our point layer and our chloropleth map. We want to set it up so that you can toggle between both data sets. This is called "layer control". It will be found in the upper right hand corner of your map output (see the red circle below, using the `Stamen Watercolor` map tile). You can use this to toggle between a point based layer, a chloropleth map, or multiple different polygon based maps -- for example, if you wanted to filter through maps for housing access by year. It'll give us an output that looks something like this: 
+Just for a little bit of flare, we're going to now combine our two layers -- our point layer and our choropleth map. We want to set it up so that you can toggle between both data sets. This is called "layer control". It will be found in the upper right hand corner of your map output (see the red circle below, using the `Stamen Watercolor` map tile). You can use this to toggle between a point based layer, a choropleth map, or multiple different polygon based maps -- for example, if you wanted to filter through maps for housing access by year. It'll give us an output that looks something like this: 
 
 ![](Images/layercontrol.PNG)
 
