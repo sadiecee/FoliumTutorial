@@ -233,7 +233,7 @@ m
 
 The intial choropleth map that we are able to create here should look something like this: 
 
-![](Images/Choro.PNG)
+![](Images/choro.PNG)
 
 Now that we have our choropleth map, we're going to want to edit the actual content of the data. First, we can use different functions to re-bin our data! This is critical if you want to use different breaks, control the number or location of the breaks, or otherwise alter the default data stratification done by Python. In this example, you're just going to be re-binning the data, which should give you a slightly different map! 
 
@@ -267,41 +267,49 @@ As you can see, the data has been divided into six different bins. You can run d
 Once you've got your data organized on the map the way you want it organized, you can customize the map aesthetics! 
 
 ```Python
+#imports the branca styling library 
 import branca
 
+#gets the url of data from github
 url = (
     "https://raw.githubusercontent.com/python-visualization/folium/master/examples/data"
 )
 county_data = f"{url}/us_county_data.csv"
 county_geo = f"{url}/us_counties_20m_topo.json"
 
-
+#reads through the country CSV, establishing a space for n/a or null values 
 df = pd.read_csv(county_data, na_values=[" "])
 
-colorscale = branca.colormap.linear.YlOrRd_09.scale(0, 50e3)
+#creates the color scale for the man -- I've chosen a purple to red color scale here. 
+colorscale = branca.colormap.linear.PuRd_09.scale(0, 100000)
+
+#creates the data frame for our data
 employed_series = df.set_index("FIPS_Code")["Employed_2011"]
 
-
+#creates a function designed to color each of the stateas based on our data
 def style_function(feature):
-    employed = employed_series.get(int(feature["id"][-5:]), None)
+    employed = employed_series.get(int(feature["id"][-5:]), None) 
     return {
-        "fillOpacity": 0.5,
-        "weight": 0,
-        "fillColor": "#black" if employed is None else colorscale(employed),
+        "fillOpacity": 0.7,
+        "weight": 0.2,
+        "fillColor": "#gray" if employed is None else colorscale(employed), 
     }
 
+#intializes our folium map
+unemployment = folium.Map(location=[48, -102], tiles="cartodbpositron", zoom_start=3)
 
-m = folium.Map(location=[48, -102], tiles="cartodbpositron", zoom_start=3)
-
+#loads our json topography (country data)
 folium.TopoJson(
     json.loads(requests.get(county_geo).text),
     "objects.us_counties_20m",
     style_function=style_function,
-).add_to(m)
+).add_to(unemployment)
 
-
-m
+#displays map
+unemployment
 ```
+
+![](flare.PNG)
 
 Just for a little bit of flare, we're going to now combine our two layers -- our point layer and our choropleth map. We want to set it up so that you can toggle between both data sets. This is called "layer control". It will be found in the upper right hand corner of your map output (see the red circle below, using the `Stamen Watercolor` map tile). You can use this to toggle between a point based layer, a choropleth map, or multiple different polygon based maps -- for example, if you wanted to filter through maps for housing access by year. It'll give us an output that looks something like this: 
 
