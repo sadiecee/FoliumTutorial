@@ -309,7 +309,7 @@ folium.TopoJson(
 unemployment
 ```
 
-![](images/flare.PNG)
+![](Images/flare.PNG)
 
 Just for a little bit of flare, we're going to now combine our two layers -- our point layer and our choropleth map. We want to set it up so that you can toggle between both data sets. This is called "layer control". It will be found in the upper right hand corner of your map output (see the red circle below, using the `Stamen Watercolor` map tile). You can use this to toggle between a point based layer, a choropleth map, or multiple different polygon based maps -- for example, if you wanted to filter through maps for housing access by year. It'll give us an output that looks something like this: 
 
