@@ -129,40 +129,73 @@ You can use the folium.Icon feature to futher customize your code, using, for ex
 You can also do circle markers instead of pin points. For example, 
 
 ```Python
-m = folium.Map(location=[45.5236, -122.6750], tiles="Stamen Toner", zoom_start=13)
+#establishes a map of the Worcester Main South region
+MainSouth = folium.Map(location=[42.2506, -71.8150], tiles="Stamen Watercolor", zoom_start=11)
 
+#first creates a circle over Hacienda Don Juan, a favorite restaurant of mine
 folium.Circle(
-    radius=100,
-    location=[45.5244, -122.6699],
-    popup="The Waterfront",
-    color="crimson",
+    radius=200,
+    location=[42.253015371065146, -71.81697934801322],
+    popup="Sadie's Favorite Worcester Restaurant",
+    color="red",
     fill=False,
-).add_to(m)
+).add_to(MainSouth)
 
+#creates a second marker that has a radius that covers most of the Main South region of Worcester at the selected zoom level
 folium.CircleMarker(
-    location=[45.5215, -122.6261],
-    radius=50,
-    popup="Laurelhurst Park",
-    color="#3186cc",
+    location=[42.248117, -71.821894],
+    radius=35,
+    popup="Main South",
+    color="black",
     fill=True,
     fill_color="#3186cc",
-).add_to(m)
+).add_to(MainSouth)
 
-m
+#displays the map
+MainSouth
 ```
 
+If you run that code, you'll get a map that looks like this: 
+
+![](Images/MS.PNG)
+
+Of course, you can alter the radius, size, location, color and more of your markers in order to customize your map! 
 
 Finally, you can customize your code by making it so that users can interact with your map, placing their own marker by clicking on it. 
 
 ```Python
-m = folium.Map(location=[46.1991, -122.1889], tiles="Stamen Terrain", zoom_start=13)
+#establishes a map to display the terrain of Mount Wachusetts
+MtW = folium.Map(location=[42.489930915979066, -71.88691379690194], tiles="Stamen Terrain", zoom_start=13)
 
-m.add_child(folium.LatLngPopup())
+#add interactive lat/long element
+MtW.add_child(folium.LatLngPopup())
 
-m
+#display map 
+MtW
 ``` 
 
-These markers will just include the lat and long values where you click. If you would like to add the data as a marker, or series of markers on your map, you can use `m.add_child(folium.ClickForMarker()` syntax -- including in the double paranthesis what, if any, dialogue option you want to pop up when the markers themselves are clicked. There are, of course, even more ways that you can use to personalize, customize and create your markers. We won't be covering them in this tutorial, but you can use [vincent](https://github.com/wrobstory/vincent) or [altair](https://altair-viz.github.io/) if you'd like more information!  
+That will look a little something like this, depending on where you click on your map: 
+![](Images/MTW_1.PNG)
+
+These markers will just include the lat and long values where you click. If you would like to add the data as a marker, or series of markers on your map, you can use `m.add_child(folium.ClickForMarker()` syntax -- including in the double paranthesis what, if any, dialogue option you want to pop up when the markers themselves are clicked. There are, of course, even more ways that you can use to personalize, customize and create your markers. We won't be covering them in this tutorial, but you can use [vincent](https://github.com/wrobstory/vincent) or [altair](https://altair-viz.github.io/) if you'd like more information! 
+
+Here's one example of using the `folium.ClickForMarker()` code: 
+
+```Python 
+#establishes a map to display the terrain of Mount Wachusetts
+MtW = folium.Map(location=[42.489930915979066, -71.88691379690194], tiles="Stamen Terrain", zoom_start=13)
+
+#add interactive lat/long element
+MtW.add_child(folium.ClickForMarker(popup="Waypoint"))
+
+#display map 
+MtW
+```
+That version, with the handful of waypoints I've added by clicking on my own map, would display a version of Mount Wachusetts like this (instead of with one point displaying lat/long like the first example code): 
+
+![](Images/MTW.PNG)
+
+You'll be able to add as many markers as you need. 
 
 ### Cholorpleth Maps 
 
