@@ -1,20 +1,20 @@
 # The Basics of Crafting Static Maps with Panda versus Interactive Maps with Folium in Python
-_Created by Sadie Murray._
+_Created by Sadie Murray (May 31st, 2021)._
 
 ## Background 
-This tutorial has two parts. First, we will walk through how to upload CSV data and create static maps using the Pandas library in Python. Then, I will take you through how to use [Folium](https://python-visualization.github.io/folium/) to create interactive maps. Folium uses the mapping capabilities of the `leaflet.js`, a javascript mapping library that is designed with "simplicity, useability and performance" in mind. `Folium` brings the mapping capacity of `leaflet` to python. `Folium` lets you create interactive maps from data that has been manipulated in python, pass raster or vector markers in for use, and lets you bind data to choropleth maps. The tutorial will take you through uploading and manipulating your data in python and creating customizable interactive maps, including choropleth maps. 
+This tutorial has two main parts. In the first part, we will explore making plots or maps from our own downloaded datasets using the Pandas library and data frame. To learn more about Pandas data structures, you can read up it [here](https://pandas.pydata.org/pandas-docs/stable/user_guide/dsintro.html), though we will go into greater detail about the Pandas library in that section. If you want to learn more about using the `pandas` library for non-mapping purposes, you can follow [this tutorial](https://github.com/comorehouse1620/Matplotlib) before returning here. This is an important first step because [Folium](https://python-visualization.github.io/folium/), which we will explore in the second part of this tutorial, uses the Pandas library. Folium uses the mapping capabilities of the `leaflet.js`, a javascript mapping library that is designed with "simplicity, useability and performance" in mind. `Folium` brings the mapping capacity of `leaflet` to python. `Folium` lets you create interactive maps from data that has been manipulated in python, pass raster or vector markers in for use, and lets you bind data to choropleth maps. 
 
-Before we get started, it's important to mention that `folium` uses the `pandas` dataframe. The `pandas` dataframe is a python library used for mapping. To learn more about Pandas data structures, you can read up it [here](https://pandas.pydata.org/pandas-docs/stable/user_guide/dsintro.html), though we will go into greater detail about the Pandas library in that section. If you want to learn more about using the `pandas` library for non-mapping purposes, you can follow [this tutorial](https://github.com/comorehouse1620/Matplotlib) before returning here. 
+For the Pandas portion ofthe tutorial, we will be using data downloaded from the US Department of Housing and Development (HUD). For the portion of the tutorial using Folium, we will be working with data that already exists and is provided by in the Folium documentation on GitHub. 
 
 ### Objectives
-The main objective of this lab is to understand how to use the `folium` library, and to gain a deeper understanding of choropleth maps. 
+The main objective of this lab is to understand how to use the `pandas` and `folium` libraries in order to create static and interactive maps in GitHub. 
 
 ### What You Need To Begin
-1. This tutorial is set up using Google Colabs, so you will need an account 
-2. You will need to install [Pandas](https://pandas.pydata.org/), [Folium](https://python-visualization.github.io/folium/), and [JSON](https://docs.python.org/3/library/json.html) libraries
-3. You will need to download the data located in this repos "Data" file 
+1. This tutorial is set up using Google Colabs, so you will need an account. 
+2. You will need to install [Pandas](https://pandas.pydata.org/), [Folium](https://python-visualization.github.io/folium/), and [JSON](https://docs.python.org/3/library/json.html) libraries. If you want to customize your `folium` maps, you'll also want to install a few additional libraries that will be described in this tutorial. 
+3. You will need to download the data located in this repos "Data" file and follow the instructions below to download the larger datafiles from the HUD online GIS account. 
 
-Use the following code to install Pandas, Folium, and JSON libraries: 
+To start, you'll want to use the following code to install Pandas, Folium, and JSON libraries: 
 
 ```Python
 import folium
@@ -24,12 +24,7 @@ from folium import plugins
 ```
 
 ## Maps with Pandas  
-Some of the housing data we are going to be using in this tutorial is too big for the repo here, so you're going to need to download the files directly from ArcGIS Online hub that stores the HUD products. 
-
-
-### Housing Crisis
-
-For this tutorial, we will be using data from the US Department of Housing and Urban Development (HUD) to look at some questions of access to affordable, public housing. Because some of the datasets are quite large, you will need to download them from ArcGIS Online. However, this repo will contain sample datasets that you can download if you would prefer. The steps below will walk you through the datasets you will download and how to upload them into Colab. 
+Okay, now that we have these libraries installed, we're going to jump right in with `Pandas`. We're going to be looking at housing data here from the US Department of Housing and Urban Development (HUD). Some of the housing data we are going to be using in this tutorial is too big for the repo here, so you're going to need to download the files directly from ArcGIS Online hub that stores the HUD products. 
 
 The two datasets we will be downloading are the Estimated Housing Authority Service Area and the Public Housing Buildings datasets. The Estimated Housing Authority Service Area is polygon based data, where the data is aggregated and summarized at the "service areas" created by HUD themselves. The second dataset, Public Housing Buildings, is point based data, with each point representing a public housing building. We will look at how to explore both types of data in this tutorial. 
 
@@ -40,6 +35,8 @@ The two datasets we will be downloading are the Estimated Housing Authority Serv
 
 **A smaller, "sample" version of that data set can be found in the data folder for this tutorial**. Because the data is so large, it might be quicker to use a smaller fraction of the data. It is also helpful if you're having difficulty downloading the data from ArcOnline. Whichever dataset you chose to use should allow you to create and visual point based maps from CSV latitude and longitude files. 
 
+**The second piece of data you are going to want to download** can be found [here](https://hudgis-hud.opendata.arcgis.com/datasets/HUD::estimated-housing-authority-service-areas/). You're going to want to download it in *csv* and *GeoJSON* format. The CSV can be found in the data folder of this tutorial, but you will need to download the GeoJSON from the site itself. 
+
 Once you have your data, you're going to want to upload it to Python. You can do that using the code below. Remember to upload all three of the files we are looking at here! 
 
 ```Python
@@ -47,12 +44,13 @@ Once you have your data, you're going to want to upload it to Python. You can do
 from google.colab import files
 uploaded = files.upload()
 ```
+This might take a while, but be patient! 
 
 ### Preparing the Data
 
 Okay, we're ready to start working with some of our data now! We're going to be using the CSV file "Public_Housing.csv" that we downloaded from HUD at the start of this tutorial. 
 
-To set up your data frame, you're going to be using the Pandas library. 
+To set up your data frame, you're going to be using the `Pandas` library. 
 
 ```Python
 import csv
@@ -76,7 +74,7 @@ To see some more information on what columns we have in here, you can run this c
 ```Python 
 ph.info()
 ```
-Okay, now you're ready to convert your CSV data into point data. Here, we're going to add a geometry field to our dataframe, and populate it with the "Point" value containing the latitude and longitude of each Public Housing Building (in our data this is called X and Y, but you'll want to check and see what the column labels are for the lat and long data in other data sets you might upload. 
+Okay, now you're ready to convert your CSV data into point data. Here, we're going to add a geometry field to our dataframe, and populate it with the "Point" value containing the latitude and longitude of each Public Housing Building (in our data this is called X and Y, but you'll want to check and see what the column labels are for the lat and long data in other data sets you might upload). 
 
 ```Python
 #add the geometry field of a point data containing the lat/long value
@@ -94,9 +92,9 @@ ph.plot(column='PCT_OCCUPIED', legend=True, figsize=(16,8));
 ```
 
 ### Visualizing Your Map
-In order to make a map, we have two options. We can load and visualize a shapefile, or we can join our CSV data to a pre-existing shapefile or GeoJSON that we load. You'll want to join the data on a common field, if you're going with that option. 
+In order to make a map, we have two options. We can load and visualize a shapefile, or we can join our CSV data to a pre-existing shapefile or GeoJSON that we load. Here, we're going to load the Estimated_Housing_Authority_Service_Areas.geojson and the Estimated_Housing_Authority_Service_Areas.csv in order to join the data from the csv to the shapes in the geojson file. You'll want to join the data on a common field, if you're going with that option (like we will now). 
 
-For now, we're going to just see what loading and running the `plot()` function on this GeoJSON will do to our data. We're going to load the Estimated_Housing_Authority_Service_Areas.geojson that we downloaded at the start of this tutorial. 
+For now, we're going to just see what loading and running the `plot()` function on this GeoJSON _without joining any data_ will do to our output. We're going to read the Estimated_Housing_Authority_Service_Areas.geojson that we downloaded at the start of this tutorial. 
 
 ```Python
 fp = "Estimated_Housing_Authority_Service_Areas.geojson"
@@ -109,7 +107,7 @@ You should be able to visualize this map:
 
 ![](Images/map1.png)
 
-If, on the other hand, you would like to display this map as a choropleth map, you can join CSV data to this file. Now, using the same code we've used to upload data before, you're going to want to upload Estimated_Housing_Authority_Service_Areas.csv file that we downloaded in the first step of this tutorial. I'm going to be joining the two fields on the on first column, "OBJECTID", but this will vary with whatever datasets you're joining. A lot of geospatial data comes with a "key" field that is intended to be used in joins like this -- that's what you want to make sure to look for! 
+Now, if we want to create a visualization such as a choropleth map with this data, you can join other data to your geojson. We're going to join the Estimated_Housing_Authority_Service_Areas.csv file we loaded at the start of the tutorial and join it to the geojson on the first column, "OBJECTID", but this will vary with whatever datasets you're joining. A lot of geospatial data comes with a "key" field that is intended to be used in joins like this -- that's what you want to make sure to look for! 
 
 ```Python
 #read the CSV and the GeoJSON data 
@@ -127,11 +125,13 @@ Running this code should produce a choropleth map:
 
 ![](Images/map2.png)
 
-We're not going to go too far in depth on customizing and adding flare to your choropleth map in this tutorial, but if you're interested, you can check out [this](https://towardsdatascience.com/a-beginners-guide-to-create-a-cloropleth-map-in-python-using-geopandas-and-matplotlib-9cc4175ab630) fantastic tutorial to the basics of choropleth editing. 
+We're not going to go too far in depth on customizing and adding flare to your choropleth map in this tutorial, but if you're interested, you can check out [this](https://towardsdatascience.com/a-beginners-guide-to-create-a-cloropleth-map-in-python-using-geopandas-and-matplotlib-9cc4175ab630) fantastic tutorial to the basics of choropleth editing using the `Pandas` library. 
 
 
 ## Using Folium 
-To create visualizations in Folium, we are going to be using data from the [GitHub documentation for the Folium function](https://python-visualization.github.io/folium/index.html). You shouldn't need to download any more data, but the documentation will be a valuable resource moving forward! 
+Now that we've made a few static maps, we're going to shift into interactive maps, using the `folium` library!
+
+To create visualizations in Folium, we are going to be using data from the [GitHub documentation for the Folium function](https://python-visualization.github.io/folium/index.html). You shouldn't need to download any more data, but the documentation will be a valuable resource moving forward. 
 
 ### Basic Maps 
 The python code to simply call a genetric folium basemap (and that we will use to add our data or baselayers to eventually) is simple: 
@@ -151,7 +151,7 @@ sample
 ```
 The different types of maps "tiles" you can use are: `Stamen Terrain`, `Open Street Map`, `Stamen Toner`, `Stamen Watercolor`, `CartoDB Positron`, or `CartoDB Dark_Matter`. Play around with these different map formats to find out which ones you like best or which might be most appropriate for your data! 
 
-Making a marker on Folium is easy! 
+Now, we're going to put some points down. Making a point, or "marker", in `folium` is easy: 
 
 ```Python
 # address latitude and longitude
