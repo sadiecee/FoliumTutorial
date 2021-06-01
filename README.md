@@ -50,7 +50,6 @@ uploaded = files.upload()
 
 ### Preparing the Data
 
-### Visualizing the Map
 Okay, we're ready to start working with some of our data now! We're going to be using the CSV file "Public_Housing.csv" that we downloaded from HUD at the start of this tutorial. 
 
 To set up your data frame, you're going to be using the Pandas library. 
@@ -87,6 +86,28 @@ ph['geometry'] = ph.apply(lambda row: Point(row.X, row.Y), axis=1)
 ph = gpd.GeoDataFrame(ph, crs={'init' :'epsg:4326'})
 ```
 
+Next, you're going to want to take a look at that data! I created a chart, using the percent occupied column, which I will be using for the rest of this tutorial. You can use that column or you can pick another column of interest to you. 
+
+```Python
+# Create a chart of our data
+ph.plot(column='PCT_OCCUPIED', legend=True, figsize=(16,8));
+```
+
+### Visualizing Your Map
+In order to make a map, we have two options. We can load and visualize a shapefile, or we can join our CSV data to a pre-existing shapefile or GeoJSON that we load. You'll want to join the data on a common field, if you're going with that option. 
+
+For now, we're going to just see what loading and running the `plot()` function on this GeoJSON will do to our data. We're going to load the Estimated_Housing_Authority_Service_Areas.geojson that we downloaded at the start of this tutorial. 
+
+```Python
+fp = "Estimated_Housing_Authority_Service_Areas.geojson"
+map_df = gpd.read_file(fp)
+
+map_df.plot()
+```
+
+You should be able to visualize this map: 
+
+![](Images/map1.PNG)
 
 ## Using Folium 
 To create visualizations in Folium, we are going to be using data from the [GitHub documentation for the Folium function](https://python-visualization.github.io/folium/index.html). You shouldn't need to download any more data, but the documentation will be a valuable resource moving forward! 
