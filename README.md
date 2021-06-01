@@ -121,22 +121,54 @@ folium.Marker(locate, popup='Home of the Woo Socks!', tooltip='click').add_to(sa
 # display map
 sample
 ```
+
 This is the basic code for displaying a map. We are going to be designing a bit of code that will iterate over our data in order to put down a marker for every public housing building -- but first, we need to load our CVS into google (you might need to reload it, depending on how quickly you have been working through the tutorial -- it's a big file, and can take a while to fully load! 
 
+You can use the folium.Icon feature to futher customize your code, using, for example `folium.Icon(color="green")` or `folium.Icon(icon="cloud")`. These will adjust how your markers look! 
+
+You can also do circle markers instead of pin points. For example, 
+
+```Python
+m = folium.Map(location=[45.5236, -122.6750], tiles="Stamen Toner", zoom_start=13)
+
+folium.Circle(
+    radius=100,
+    location=[45.5244, -122.6699],
+    popup="The Waterfront",
+    color="crimson",
+    fill=False,
+).add_to(m)
+
+folium.CircleMarker(
+    location=[45.5215, -122.6261],
+    radius=50,
+    popup="Laurelhurst Park",
+    color="#3186cc",
+    fill=True,
+    fill_color="#3186cc",
+).add_to(m)
+```
+
+m
+
+Finally, you can customize your code by making it so that users can interact with your map, placing their own marker by clicking on it. 
+
+```Python
+m = folium.Map(location=[46.1991, -122.1889], tiles="Stamen Terrain", zoom_start=13)
+
+m.add_child(folium.LatLngPopup())
+
+m
+``` 
+
+These markers will just include the lat and long values where you click. If you would like to add the data as a marker, or series of markers on your map, you can use `m.add_child(folium.ClickForMarker()` syntax -- including in the double paranthesis what, if any, dialogue option you want to pop up when the markers themselves are clicked. There are, of course, even more ways that you can use to personalize, customize and create your markers. We won't be covering them in this tutorial, but you can use [vincent](https://github.com/wrobstory/vincent) or [altair](https://altair-viz.github.io/) if you'd like more information!  
 
 ### Cholorpleth Maps 
 
 Now, we're going to bring in the GeoJSON file we downloaded at the start of the tutorial: Estimated_Housing_Authority_Service_Areas. This part is actually pretty simple. We're just going to initialize our Folium map with the GeoJSON layer. 
 
 ```Python
-# map
-map_geojson = folium.Map(location=[33.77, 35.15], zoom_start=3)
 
-# add geojson file to map
-folium.GeoJson('Estimated_Housing_Authority_Service_Areas.geojson', name='geojson servicearea').add_to(map_geojson)
-
-# display map
-map_geojson
 ```
 
 You can use this to toggle between a point based layer, a chloropleth map, or multiple different polygon based maps -- for example, if you wanted to filter through maps for housing access by year. It'll give us an output that looks something like this: 
@@ -145,35 +177,6 @@ And now for the most exciting part! We're going to be using this data to create 
 
 ```Python
 
-#you are going to use QGIS to convert your shapefile into something we can use
-with open('Estimated_Housing_Authority_Service_Areas.geojson') as f:
-    ServiceAreas = json.load(f)
-    
-# add feature 'id' county name to geojson
-# access features
-for i in Estimated_Housing_Authority_Service_Areas['features']:
-    i['id'] = i['properties']['NAME_L']
-    
-# load data associated with geo_json
-hud_df = pd.read_csv('Estimated_Housing_Authority_Service_Areas.csv')
-    
-# map    
-map_choropleth = folium.Map(location=[39.77, -86.15], zoom_start=7)
-
-# choropleth
-folium.Choropleth(
-    geo_data=geojson_counties,
-    name='choropleth',
-    data=pop_df,
-    columns=['County', 'Population'],
-    # see folium.Choropleth? for details on key_on
-    key_on='feature.id',
-    fill_color='YlGn',
-    fill_opacity=0.5,
-    line_opacity=0.5,
-    legend_name='Population',
-    highlight=True
-).add_to(map_choropleth)
 ```
 
 
