@@ -107,7 +107,7 @@ map_df.plot()
 
 You should be able to visualize this map: 
 
-![](Images/map1.PNG)
+![](Images/map1.png)
 
 ## Using Folium 
 To create visualizations in Folium, we are going to be using data from the [GitHub documentation for the Folium function](https://python-visualization.github.io/folium/index.html). You shouldn't need to download any more data, but the documentation will be a valuable resource moving forward! 
