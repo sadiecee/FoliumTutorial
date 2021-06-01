@@ -147,9 +147,10 @@ folium.CircleMarker(
     fill=True,
     fill_color="#3186cc",
 ).add_to(m)
-```
 
 m
+```
+
 
 Finally, you can customize your code by making it so that users can interact with your map, placing their own marker by clicking on it. 
 
@@ -165,24 +166,104 @@ These markers will just include the lat and long values where you click. If you 
 
 ### Cholorpleth Maps 
 
-Now, we're going to bring in the GeoJSON file we downloaded at the start of the tutorial: Estimated_Housing_Authority_Service_Areas. This part is actually pretty simple. We're just going to initialize our Folium map with the GeoJSON layer. 
+Now, this part is pretty simple. We're going to be initializing a chloropleth map, but we're going to be doing it by first importing a json of the US states and then attaching a CSV. All the data here comes from the Python documentation page for the Folium library, so you shouldn't need to download anymore data -- though you are welcome to use your own datasets for these step instead! 
 
 ```Python
+import pandas as pd
+
+url = (
+    "https://raw.githubusercontent.com/python-visualization/folium/master/examples/data"
+)
+state_geo = f"{url}/us-states.json"
+state_unemployment = f"{url}/US_Unemployment_Oct2012.csv"
+state_data = pd.read_csv(state_unemployment)
+
+m = folium.Map(location=[48, -102], zoom_start=3)
+
+folium.Choropleth(
+    geo_data=state_geo,
+    name="choropleth",
+    data=state_data,
+    columns=["State", "Unemployment"],
+    key_on="feature.id",
+    fill_color="YlGn",
+    fill_opacity=0.7,
+    line_opacity=0.2,
+    legend_name="Unemployment Rate (%)",
+).add_to(m)
+
+folium.LayerControl().add_to(m)
+
+m
 
 ```
 
-You can use this to toggle between a point based layer, a chloropleth map, or multiple different polygon based maps -- for example, if you wanted to filter through maps for housing access by year. It'll give us an output that looks something like this: 
-
-And now for the most exciting part! We're going to be using this data to create a chloropleth map! Here, we're going to want to upload both the Estimated_Housing_Authority_Service_Areas.geojson file and the Estimated_Housing_Authority_Service_Areas.csv file. This will contain the actual shape of the regions and the data to populate the regions. Estimated_Housing_Authority_Service_Areas.csv can be found in the data file for this tutorial. Otherwise, you can download it from HUD's arcGIS online account where we found the Estimated_Housing_Authority_Service_Areas.geojson file. 
+Now that we have our chloropleth map, we're going to want to edit the actual content of the data. First, we can use different functions to re-bin our data! This is critical if you want to use different breaks, control the number or location of the breaks, or otherwise alter the default data stratification done by Python. In this example, you're just going to be re-binning the data, which should give you a slightly different map! 
 
 ```Python
+bins = list(state_data["Unemployment"].quantile([0, 0.25, 0.5, 0.75, 1]))
 
+m = folium.Map(location=[48, -102], zoom_start=3)
+
+folium.Choropleth(
+    geo_data=state_geo,
+    data=state_data,
+    columns=["State", "Unemployment"],
+    key_on="feature.id",
+    fill_color="BuPu",
+    fill_opacity=0.7,
+    line_opacity=0.5,
+    legend_name="Unemployment Rate (%)",
+    bins=bins,
+    reset=True,
+).add_to(m)
+
+m
 ```
-
 
 ### Adding Flare
 
-Just for a little bit of flare, we're going to now combine our two layers -- our point layer and our chloropleth map. We want to set it up so that you can toggle between both data sets. This is called "layer control". It will be found in the upper right hand corner of your map output (see the red circle below, using the `Stamen Watercolor` map tile). 
+Once you've got your data organized on the map the way you want it organized, you can customize the map aesthetics! 
+
+```Python
+import branca
+
+url = (
+    "https://raw.githubusercontent.com/python-visualization/folium/master/examples/data"
+)
+county_data = f"{url}/us_county_data.csv"
+county_geo = f"{url}/us_counties_20m_topo.json"
+
+
+df = pd.read_csv(county_data, na_values=[" "])
+
+colorscale = branca.colormap.linear.YlOrRd_09.scale(0, 50e3)
+employed_series = df.set_index("FIPS_Code")["Employed_2011"]
+
+
+def style_function(feature):
+    employed = employed_series.get(int(feature["id"][-5:]), None)
+    return {
+        "fillOpacity": 0.5,
+        "weight": 0,
+        "fillColor": "#black" if employed is None else colorscale(employed),
+    }
+
+
+m = folium.Map(location=[48, -102], tiles="cartodbpositron", zoom_start=3)
+
+folium.TopoJson(
+    json.loads(requests.get(county_geo).text),
+    "objects.us_counties_20m",
+    style_function=style_function,
+).add_to(m)
+
+
+m
+```
+
+Just for a little bit of flare, we're going to now combine our two layers -- our point layer and our chloropleth map. We want to set it up so that you can toggle between both data sets. This is called "layer control". It will be found in the upper right hand corner of your map output (see the red circle below, using the `Stamen Watercolor` map tile). You can use this to toggle between a point based layer, a chloropleth map, or multiple different polygon based maps -- for example, if you wanted to filter through maps for housing access by year. It'll give us an output that looks something like this: 
+
 ![](Images/layercontrol.PNG)
 
 The basic code to set up layer control (or layer toggling) is: 
